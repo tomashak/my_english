@@ -1,0 +1,6 @@
+google_spreadsheet
+google-auth-oauthlib
+pandas
+gTTS 
+pyttsx3 
+playsound

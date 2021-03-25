@@ -1,0 +1,51 @@
+swagger: '2.0'
+info:
+  description: API for Digital Certificate 2.0 - VCF - ONLY MOCK
+  version: v2
+  title: VCF MOCK API
+
+host: gw-azwe-dev.skoda-api.com
+basePath: /it/solution/uvd-vcf-api-mock/v2
+schemes:
+  - https 
+paths:
+  /getrecord:
+    get:
+      summary: Get data for Digital Certificate 2.0      
+      description: >-
+        Get data for Digital Certificate in all available languages based on VIN
+      responses:
+        200:
+          description: Success          
+          schema:
+            $ref: '#/definitions/GetRecord'
+          examples:
+            application/json:
+              {
+                "id": 38,
+                "title": "T-shirt"
+              }
+  /health:
+    get:
+      summary: Get info status
+      responses:
+        204:
+          description: Success
+
+definitions:
+  GetRecord:
+    type: object
+    properties:
+      vin: 
+        type: string
+        description: VIN code
+        example: TMBGD21Z052092086        
+      skodaID: 
+        type: string
+        description: ID user
+        example: 987654-789123456        
+      mileageHistory:
+        type: string
+        description: mileage info
+        example: 1257              
+
