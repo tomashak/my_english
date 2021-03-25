@@ -193,33 +193,27 @@ tbody tr:hover {
 }
 
 .column1 {
-  width: 260px;
-  padding-left: 40px;
+  width: 200px;
+  padding-left: 10px;
 }
 
 .column2 {
-  width: 160px;
+  width: 200px;
 }
 
 .column3 {
-  width: 245px;
+  width: 200px;
 }
 
 .column4 {
-  width: 110px;
-  text-align: right;
+  width: 270px;  
 }
 
 .column5 {
-  width: 170px;
-  text-align: right;
+  width: 270px;  
+  padding-right: 10px;
 }
 
-.column6 {
-  width: 222px;
-  text-align: right;
-  padding-right: 62px;
-}
 
 
 @media screen and (max-width: 992px) {
