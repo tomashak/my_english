@@ -9,6 +9,6 @@ tts.save("speech.mp3")
 # play the audio file
 #playsound("speech.mp3")
 
-tts = gtts.gTTS("I have watched you correct my work. I guess I have misunderstood the assignment in some cases.", lang="en")
-tts.save("druha.mp3")
-playsound("druha.mp3")
+tts = gtts.gTTS("a storm.", lang="en")
+tts.save("storm.mp3")
+playsound("storm.mp3")
