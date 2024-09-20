@@ -4,11 +4,8 @@ import os.path
 import unicodedata
 import string
 import gtts
-from playsound import playsound
-from googleapiclient.discovery import build
-from google_auth_oauthlib.flow import InstalledAppFlow
-from google.auth.transport.requests import Request
-from google.oauth2.credentials import Credentials
+import csv
+
 
 # If modifying these scopes, delete the file token.json.
 SCOPES = ['https://www.googleapis.com/auth/spreadsheets.readonly']
@@ -36,43 +33,25 @@ def clean_filename(filename, whitelist=valid_filename_chars, replace=' '):
     return cleaned_filename[:char_limit]  
 
 def main():
-    """Shows basic usage of the Sheets API.
-    Prints values from a sample spreadsheet.
-    """
-    creds = None
-    # The file token.json stores the user's access and refresh tokens, and is
-    # created automatically when the authorization flow completes for the first
-    # time.
-    if os.path.exists('token.json'):
-        creds = Credentials.from_authorized_user_file('token.json', SCOPES)
-    # If there are no (valid) credentials available, let the user log in.
-    if not creds or not creds.valid:
-        if creds and creds.expired and creds.refresh_token:
-            creds.refresh(Request())
-        else:
-            flow = InstalledAppFlow.from_client_secrets_file(
-                'credentials.json', SCOPES)
-            creds = flow.run_local_server(port=0)
-        # Save the credentials for the next run
-        with open('token.json', 'w') as token:
-            token.write(creds.to_json())
+    # Cesta k CSV souboru
+    csv_file_path = 'data/english.csv'
 
-    service = build('sheets', 'v4', credentials=creds)
+    # Načtení dat z CSV souboru
+    with open(csv_file_path, newline='', encoding='utf-8') as csvfile:
+        reader = csv.reader(csvfile)
+        values = list(reader)[1:]  # Přeskočit první řádek (záhlaví)
 
-    # Call the Sheets API
-    sheet = service.spreadsheets()
-    result = sheet.values().get(spreadsheetId=SAMPLE_SPREADSHEET_ID,
-                                range=SAMPLE_RANGE_NAME).execute()
-    values = result.get('values', [])
-    print(values)
     if not values:
         print('No data found.')
     else:
         print('Data OK')
+        print(values)
         output = ""
         for row in values:            
             HTMLrow = "<tr>\r\n"
             print('------------')
+            print(row)
+            row = str(row).replace('"','').replace('[','').replace(']','').replace('\'','').split(';')
             print(row)
             if len(row) >= 2:
                 HTMLrow =  HTMLrow + '<td class="column1">'+ row[0] +' <button onclick="playSound(\'mp3/'+clean_filename(row[0])+'.mp3'+'\');">&#9836;</button></td>\r\n'
@@ -82,7 +61,11 @@ def main():
                     tts.save('web/mp3/'+clean_filename(row[0])+'.mp3')
                     #print('MP3 created')
                 #print(row[1])
-                HTMLrow =  HTMLrow + '<td class="column2">'+row[1]+'</td>\r\n'
+                HTMLrow =  HTMLrow + '<td class="column1">'+ row[1] +' <button onclick="playSound(\'mp3/'+clean_filename(row[1])+'.mp3'+'\');">&#9836;</button></td>\r\n'
+                #print(clean_filename(row[0])+'.mp3')
+                if not os.path.exists('web/mp3/'+clean_filename(row[1])+'.mp3'):
+                    tts = gtts.gTTS(row[1], lang="en")
+                    tts.save('web/mp3/'+clean_filename(row[1])+'.mp3')
                 if len(row) >= 3:
                     #print(row[2])
                     HTMLrow =  HTMLrow + '<td class="column3">'+row[2]+'</td>\r\n'

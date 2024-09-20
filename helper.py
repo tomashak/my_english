@@ -1,1 +1,0 @@
-def prepare_csv(url, todo)
